@@ -6,7 +6,7 @@
 /*   By: mtraball <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 13:24:00 by mtraball          #+#    #+#             */
-/*   Updated: 2021/04/12 14:12:26 by mtraball         ###   ########.fr       */
+/*   Updated: 2021/04/20 17:36:06 by mtraball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*get_line(char *str)
 	while (str[i] && str[i] != '\n')
 		i++;
 	rtn = malloc(sizeof(char) * (i + 1));
-	if (rtn = NULL)
+	if (rtn == NULL)
 		return (0);
 	i = 0;
 	while (str[i] && str[i] != '\n')
@@ -79,6 +79,12 @@ static char	*get_line(char *str)
 	return (rtn);
 }
 
+static void	ft_end(char *buff)
+{
+	free(buff);
+	return (-1);
+}
+
 int	get_next_line(int fd, char **line)
 {
 	char			*buff;
@@ -88,19 +94,16 @@ int	get_next_line(int fd, char **line)
 	reader = 1;
 	if (fd < 0 || !line || BUFFER_SIZE <= 0 || fd > 999)
 		return (-1);
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1);
+	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buff == NULL)
 		return (-1);
 	while (!has_return(save) && reader != 0)
 	{
 		reader = read(fd, buff, BUFFER_SIZE);
-		if ((reader == -1)
-		{
-			free(buff);
-			return (-1);
-			}
+		if (reader == -1)
+			return (ft_end(buff));
 		buff[reader] = '\0';
-		save= join_str(save, buff);
+		save = join_str(save, buff);
 	}
 	free(buff);
 	*line = get_line(save);
